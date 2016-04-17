@@ -16,6 +16,20 @@ app.use('/users', usersRoute);
 // public route for static files (frontend)
 app.use(express.static('public'));
 
+// ### MongoDB Connection before startup
+var mongoose = require('mongoose');
+var config = require('./config.json');
+mongoose.connect(config.mongo_uri, function (err) {
+	if (err) {
+		console.log('======================================================================================');
+		console.log('Error: ');
+		console.log('Could not establish connection to mongodb.');
+		console.log('Check if mongodb is running and config.json');
+		console.log('===================================================================================');
+		process.exit(1);
+	}
+});
+
 // ### Startup
 app.listen(port, function (err) {
 	if (err) {
